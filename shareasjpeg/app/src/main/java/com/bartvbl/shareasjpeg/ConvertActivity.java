@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
-import com.bartvbl.shareasjpeg.databinding.ActivityMainBinding;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.target.CustomTarget;
@@ -36,17 +35,12 @@ public class ConvertActivity extends AppCompatActivity {
         String action = intent.getAction();
         String type = intent.getType();
 
-
-
         if (Intent.ACTION_SEND.equals(action) && type != null) {
-            Log.d("applog", "got intent with type: " + type.toString());
             if (type.startsWith("image")) {
                 handleSendImage(intent); // Handle multiple images being sent
             }
         } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
             // toast("only send one image at a time!");
-        } else {
-            // Handle other intents, such as being started from the home screen
         }
     }
 
@@ -54,10 +48,6 @@ public class ConvertActivity extends AppCompatActivity {
         Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
         if (imageUri != null) {
             Context context = getApplicationContext();
-            int duration = Toast.LENGTH_SHORT;
-
-
-
             FutureTarget<Bitmap> futureTarget =
                     Glide.with(context)
                             .asBitmap()
@@ -78,7 +68,6 @@ public class ConvertActivity extends AppCompatActivity {
                         }
                         cachePath.mkdirs();
                         File file = new File(cachePath, "image.jpeg");
-                        Log.d("applog", "File written to: " + file.toString());
                         FileOutputStream stream  = new FileOutputStream(file);
                         resource.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                         stream.close();
@@ -96,37 +85,13 @@ public class ConvertActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-
-
-
-
-
-                        Glide.with(context).clear(futureTarget);
-
-
-
-
+                    Glide.with(context).clear(futureTarget);
                 }
 
                 @Override
                 public void onLoadCleared(@Nullable Drawable placeholder) {
                 }
             });
-
         }
-    }
-
-    private void saveImage(Bitmap image, File storageDir, File outputFile) {
-        String savedImagePath = outputFile.getAbsolutePath();
-        try {
-            OutputStream fOut = new FileOutputStream(outputFile);
-            image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-            fOut.close();
-            Toast.makeText(ConvertActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            Toast.makeText(ConvertActivity.this, "Error while saving image!", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        }
-
     }
 }

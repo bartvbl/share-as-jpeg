@@ -9,11 +9,10 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.bartvbl.shareasjpeg.databinding.ActivityMainBinding;
-
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.bartvbl.shareasjpeg.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,13 +48,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
     }
 
 
